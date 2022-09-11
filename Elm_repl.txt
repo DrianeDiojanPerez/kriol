@@ -1,0 +1,1 @@
+area base height = "The area of a triangle with base " ++ String.fromFloat base ++ " and height " ++ String.fromFloat height ++ " is " ++ String.fromFloat ((base * height)/2)
