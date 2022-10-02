@@ -2,9 +2,11 @@
 package main
 
 import (
-	
 	"fmt"
 	"net/http"
+
+	"kriol.DrianePerez.net/internal/data"
+	"kriol.DrianePerez.net/internal/validator"
 )
 
 //create entires hander for the POST /v1/entries endpoint
@@ -18,6 +20,21 @@ func (app *application) createEntryHandler(w http.ResponseWriter, r *http.Reques
 	err := app.readJSON(w, r, &input)
 	if err != nil {
 		app.badRequestResponse(w, r, err)
+		return
+	}
+	//copyung the values
+	entries := &data.EntriesData{
+		Name: input.Name,
+		String: input.String,
+		Translate: input.Translate,
+	}
+
+	//initialize a new validator instance
+	v := validator.New()
+	
+	//check the map to determine if there were any validation errors
+	if data.ValidateEntires(v,entries); !v.Valid(){
+		app.failedValidationResponse(w,r,v.Errors)
 		return
 	}
 	//Display the request
