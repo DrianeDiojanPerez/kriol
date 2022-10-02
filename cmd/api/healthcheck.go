@@ -4,17 +4,20 @@ package main
 import (
 	"net/http"
 
-	"kriol.DrianePerez.net/internal/data"
+	// "kriol.DrianePerez.net/internal/data"
 )
 
 func (app *application) healthcheckHandler(w http.ResponseWriter, r *http.Request){
 
 	// Create a map to hold the healthcheck data
 	
-	data := data.HealthcheckData{
-		Status: "available",
-		Enviornment: app.config.env,
-		Version: version,
+	data := envelope{
+		"Status": "available",
+		"System_Information": map[string]string{
+			"Enviornment": app.config.env,
+		"Version": version,
+		},
+		
 	}
 	err := app.writeJSON(w, http.StatusOK, data, nil)
 	if err != nil {
