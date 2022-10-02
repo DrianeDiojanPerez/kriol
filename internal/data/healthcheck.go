@@ -2,7 +2,7 @@
 package data
 
 type HealthcheckData struct {
-	Status string
-	Enviornment string
-	Version string
+	Status string `json:"status,omitempty"`
+	Enviornment string `json:"enviornment,omitempty"`
+	Version string `json:"version,omitempty"`
 }
