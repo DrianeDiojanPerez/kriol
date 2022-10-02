@@ -2,7 +2,7 @@
 package main
 
 import (
-	"encoding/json"
+	
 	"fmt"
 	"net/http"
 )
@@ -15,9 +15,9 @@ func (app *application) createEntryHandler(w http.ResponseWriter, r *http.Reques
 		String string `json:"string"`
 		Translate string `json:"translate"`
 	}
-	err := json.NewDecoder(r.Body).Decode(&input)
+	err := app.readJSON(w, r, &input)
 	if err != nil {
-		app.errorResponse(w, r, http.StatusBadRequest, err.Error())
+		app.badRequestResponse(w, r, err)
 		return
 	}
 	//Display the request
