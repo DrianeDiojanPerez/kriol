@@ -50,6 +50,26 @@ func (app *application) showEntryHandler(w http.ResponseWriter, r *http.Request)
 		app.notFoundResponse(w, r)
 		return
 	}
-	// Display the entires
-	fmt.Fprintf(w, "Show The Details For Entry %d\n", id)
+	int1:=int(id)
+	tools := &data.Tools{
+		Int: int1,
+	}
+	v := validator.New()
+	if data.ValidateInt(v,tools); !v.Valid(){
+		app.failedValidationResponse(w,r,v.Errors)
+		return
+	}
+	strw:=tools.GenerateRandomString(int1)
+	data := envelope{
+		"id": int1,
+		"random_string": strw,
+		}
+	err = app.writeJSON(w, http.StatusOK, data, nil)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+
+	
 }
